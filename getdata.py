@@ -9,7 +9,7 @@ def home():
 @app.route('/fetch', methods=['GET'])
 
 def fetch_data():
-    url="https://www.flipkart.com/mobile-phones-store"
+    url="https://www.meesho.com/dresses-women/pl/3j3?srsltid=AfmBOorKGnjy3bePlFsSjS62FNYQaGrEXDwVhGupvRq4GXrVi0k0SaDH"
 
     response=requests.get(url)
     return jsonify({
