@@ -18,6 +18,14 @@ jobs:
         with:
           python-version: '3.8'  # Specify Python version explicitly
 
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          # restore-keys: |
+          #   ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip  # Upgrade pip
@@ -31,14 +39,7 @@ jobs:
         run: |
           nohup gunicorn -w 4 getdata:app --bind 0.0.0.0:9001 &  # Run Flask app in background
 
-      - name: Wait for Flask server to start
-        run: |
-          sleep 5  # Give time for the server to start
-
       - name: Check Flask API is running
         run: |
+          sleep 5  # Give time for the server to start
           curl http://127.0.0.1:9001/fetch  # Test if Flask app is responding
-
-      - name: Open Flask app URL in browser (Ubuntu)
-        run: |
-          xdg-open http://127.0.0.1:9001/fetch  # Open the Flask app URL in a new tab (for Ubuntu)
